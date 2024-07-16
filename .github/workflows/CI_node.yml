@@ -14,16 +14,41 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: set Node.js
+      - name: Set Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16'
 
-      - name: install dependencies
+      - name: Install dependencies
         run: npm i
 
-      - name: test npm
+      - name: Test npm
         run: npm test
+      
+      - name: Remove node_modules
+        run: rm -rf ./node_modules
+
+      - name: Upload files
+        uses: appleboy/scp-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          port: ${{ secrets.SERVER_PORT }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          source: "./*"  # 로컬에서 빌드한 파일들
+          target: "~/project"  # 서버에 업로드할 경로
+
+      - name: Deploy server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          port: ${{ secrets.SERVER_PORT }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd ~/project            
+            npm install
+            nohup npm start >> test.log &
