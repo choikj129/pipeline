@@ -1,0 +1,16 @@
+#  Actions Tab에 나타날 name (필수 아님)
+name: CI_node
+
+# Workflow Event list
+# 브랜치 구분 없이 하려면 on: [push, pull_request]
+on: [push]
+
+# User가 수동으로 Actions Tab에서 workflow 실행    
+# workflow_dispatch:
+jobs:
+  # CI
+  build:
+    # Docker Image
+    runs-on: ubuntu-latest
+
+  # step:
