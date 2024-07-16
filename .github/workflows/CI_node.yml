@@ -13,4 +13,17 @@ jobs:
     # Docker Image
     runs-on: ubuntu-latest
 
-  # step:
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+
+      - name: set Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: install dependencies
+        run: npm i
+
+      - name: start npm
+        run: npm start
