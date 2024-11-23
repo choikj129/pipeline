@@ -31,19 +31,6 @@ jobs:
       - name: Remove node_modules
         run: rm -rf ./node_modules
 
-      # 2. package.json 변경 여부 확인
-      - name: Check if package.json changed
-        id: check_package_json
-        run: |
-          git fetch origin main
-          echo `git diff --name-only`
-          if git log -n 1 --name-only --oneline | grep -q "package.json"; then
-            echo "changed=true" >> $GITHUB_ENV
-          else
-            echo "changed=false" >> $GITHUB_ENV
-          fi
-
-
       - name: Upload files
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -63,10 +50,5 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd ~/project  
-            if [ "${{ env.changed }}" = "true" ]; then
-              echo "package.json has changed. Running npm install..."
-              npm install
-              nohup npm start >> test.log 2>&1 &
-            else
-              echo "package.json has not changed. Skipping npm install."
-            fi
+            npm install
+            nohup npm start >> test.log 2>&1 &
