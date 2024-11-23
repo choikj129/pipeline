@@ -36,7 +36,7 @@ jobs:
         id: check_package_json
         run: |
           git fetch origin main
-          if git diff --name-only HEAD~1 | grep -q "package.json"; then
+          if git diff --name-only HEAD^ | grep -q "package.json"; then
             echo "changed=true" >> $GITHUB_ENV
           else
             echo "changed=false" >> $GITHUB_ENV
