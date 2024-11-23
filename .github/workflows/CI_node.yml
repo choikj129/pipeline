@@ -51,4 +51,4 @@ jobs:
           script: |
             cd ~/project            
             npm install
-            nohup npm start >> test.log &
+            nohup npm start >> test.log 2>&1 &
