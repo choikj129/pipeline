@@ -36,6 +36,7 @@ jobs:
         id: check_package_json
         run: |
           git fetch origin main
+          echo `git log -n 1 --name-only --oneline`
           if git log -n 1 --name-only --oneline | grep -q "package.json"; then
             echo "changed=true" >> $GITHUB_ENV
           else
